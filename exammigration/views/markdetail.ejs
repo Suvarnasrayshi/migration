@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form action="/result" method="post">
+    <input type="hidden" name="id" value="<%= id %>"> 
+  <label for="ai">AI</label>
+  <input type="text" name="ai" id="<%= subjects.name.toLowerCase() %>">
+  <label for="c">C++</label>
+  <input type="text" name="c" id="<%= subjects.name %>">
+
+  <label for="dbms">DBMS</label>
+  <input type="text" name="dbms" id="<%= subjects.name %>">
+
+  <label for="web">WEB</label>
+  <input type="text" name="web" id="<%= subjects.name %>">
+
+  <label for="ds">DS</label>
+  <input type="text" name="ds" id="<%= subjects.name %>">
+
+  <input type="submit" value="submit">
+</form>
+</body>
+</html>
