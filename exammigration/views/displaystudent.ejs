@@ -16,8 +16,8 @@
         <td><%= user.email %></td>
         <td><%= user.city %></td>
         <td><a href="/student/delete/<%=user.id %>">Delete</a></td>
-        <td><a href="/result?id=<%=user.id %>">Result</a></td>
-
+        <td><a href="/result/<%=user.id %>">Result</a></td>
+        <td><a href="/marks?id=<%=user.id %>">Add Marks</a></td>
       </tr>
       <% }) %>
     </tbody>

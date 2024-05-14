@@ -15,4 +15,4 @@ app.use("/",log);
 
 sequelize.sync({force:false});
 app.listen(process.env.port || 3003);
-console.log("Running at Port 3003");
+console.log("🚀 Running at Port 3003");

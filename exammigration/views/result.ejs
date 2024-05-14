@@ -1,0 +1,36 @@
+  
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Report Card</title>
+  </head>
+  <body>
+      <h1>Report Card</h1>
+      <h2>Student Details</h2>
+      <p>Name: <%= studentData.firstName %> <%= studentData.lastName %></p>
+      <p>Email: <%= studentData.email %></p>
+      <p>City: <%= studentData.city %></p>
+      <h2>Subjects & Marks</h2>
+      <% if(total){%>
+        
+      TOTAL:  <%= total.total_marks %>
+      <table>
+          <tr>
+              <th>Subject</th>
+              <th>Marks</th>
+          </tr>
+          <% result.forEach(exam => { %>
+              <tr>
+                <td><%= exam.exam.subject.name %></td>
+                <td><%= exam.exam.marks %></td>
+              </tr>
+          <% }); %>
+      </table>
+      <%}%>
+           <%if(!total){%>
+        <h3>dont have the data here</h3>
+        <%}%>
+  </body>
+  </html>

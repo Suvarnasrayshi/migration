@@ -1,0 +1,89 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Form</title>
+  <style>
+    body {
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: aliceblue;
+      padding: 100px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form input {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form {
+      margin-bottom: 10px;
+      font-size: 15px;
+      color: #0a3626;
+    }
+
+    .button {
+      padding: 9px 14px;
+      background-color: #0a3626;
+      ;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+    }
+
+    #fnamein,
+    #lnamein,
+    #emailmsg,
+    #numbermsg {
+      font-size: 12px;
+      color: rgb(234, 78, 78);
+    }
+
+    h3 {
+      color: #0a3626;
+    }
+
+    a:link {
+      color: #1f6a4f;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    a:visited {
+      color: #0a3626;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <form action="/subject" method="POST">
+
+    <div class="container">
+      <div class="form">
+
+        <h3>ADD SUBJECT</h3>
+
+        <input type="text" id="name" name="name" placeholder="Subject Name" required>
+      </div>
+      <input type="submit" class="button" value="REGISTER">
+
+    </div>
+  </form>
+</body>
+
+</html>

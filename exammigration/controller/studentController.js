@@ -8,7 +8,7 @@ const Sequelize = require("sequelize");
 const { DataTypes, Model } = require('sequelize');;
 const sequelize = require("../utils/database");
 // import { student,subject,exam } from '../models'
-const { student,subject,exam } = require("../models");
+const { student, subject, exam } = require("../models");
 
 
 
@@ -28,19 +28,19 @@ exports.getstudent = async (req, res) => {
 exports.poststudent = async (req, res) => {
   try {
     // res.render('student');
-    const{fname,lname,email,city}=req.body;
-    console.log(city);
-    const studentdetail = await student.create({ 
-      firstName:fname,
+    const { fname, lname, email, city } = req.body;
+    // console.log(city);
+    const studentdetail = await student.create({
+      firstName: fname,
       lastName: lname,
       email,
       city,
-     });
+    });
 
-// console.log(studentdetail);
- const studentdata = await student.findAll();
-res.render('displaystudent', { studentdata });
-   // res.json([users])
+    // console.log(studentdetail);
+    const studentdata = await student.findAll();
+    res.render('displaystudent', { studentdata });
+    // res.json([users])
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -50,7 +50,7 @@ res.render('displaystudent', { studentdata });
 
 exports.deletestudent = async (req, res) => {
   try {
-    id=req.params.id;
+    id = req.params.id;
     await student.destroy({
       where: {
         id: id,
@@ -61,53 +61,115 @@ exports.deletestudent = async (req, res) => {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
-  
+
   const studentdata = await student.findAll();
   res.render('displaystudent', { studentdata });
 }
 
-exports.getsubject = async (req,res)=>{
+exports. getsubject = async (req, res) => {
+  res.render('subject');
+};
+
+
+exports. postsubject = async (req, res) => {
+ const {name}=req.body
+ const subjectdetails = await subject.create({
+ name
+});
+res.render('student')
+};
+
+
+
+exports.showsubject = async (req, res) => {
   try {
     const subjects = await subject.findAll();
-    let id=req.query.id;
-   // console.log(id);
-    res.render('markdetail', { subjects,id});
-} catch (error) {
+    let id = req.query.id;
+    // console.log(id);
+    res.render('markdetail', { subjects, id });
+  } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching subjects');
-}
-}
-
-
-exports.insertmarks = async (req,res)=>{
-    try {
-     console.log(req.body);
-       const{id,ai,c,dbms,web,ds}=req.body;
-    const subjects =['ai', 'c', 'dbms', 'web', 'ds'];
-    console.log("subjectdata",subjects);
-   // for(const name of subjects){
-      const subjectdata = await subject.findAll(
-      
-        { raw: true,
-          where:
-          {name:subjects}
-        });
-        for(const subjectdatadetail of subjectdata){
-        console.log("subjectdata",subjectdatadetail);
-        console.log("drggggggggggggrdfgfgfg",req.body[subject.name.toLowerCase()]);
-      await exam.create({
-        studentid:id,
-        subjectid:subjectdatadetail.id,
-        marks:req.body[subject.name]
-      })
-    }
-// }
-     }
-    catch (error) {
-      console.error(error);
-    }
-    
-    const studentdata = await student.findAll();
-    res.send("hello")
-   // res.render('markdetail');
   }
+}
+
+
+exports.insertmarks = async (req, res) => {
+  try {
+    // console.log(req.body);
+    const { id, ai, c, dbms, web, ds } = req.body;
+    const subjects = ['ai', 'c', 'dbms', 'web', 'ds'];
+    console.log(req.body)
+    // console.log("subjectdata", req.body);
+    const subjectdata = await subject.findAll(
+
+      {
+        raw: true,
+        where:
+          { name: subjects }
+      });
+    for (const subjectdatadetail of subjectdata) {
+      // console.log("subjectdata", subjectdatadetail);
+      // console.log("aasaasaassasaasasasas", req.body[subjectdatadetail.name]);
+     const data= await exam.create({
+        studentid: id,
+        subjectid: subjectdatadetail.id,
+        marks: req.body[subjectdatadetail.name]
+      })
+      res.json({data})
+    }
+    const studentdata = await student.findAll();
+    res.render('displaystudent', { studentdata });
+
+  }
+  catch (error) {
+    console.error(error);
+  }
+}
+
+
+exports.getresult = async (req, res) => {
+  try {
+    id = req.params.id;
+    // console.log("id is", id);
+    const result = await student.findAll({
+      attributes: ['id', 'firstName', 'lastName','email','city'],
+      include: [{
+        model: exam,
+        required: true,
+        attributes: ['marks'],
+
+        include: [{
+          model: subject,
+          required: true,
+          attributes: ['name']
+        }],
+      }],
+      where: {
+        id: id
+      }
+    })
+
+
+    const total = await exam.findOne({
+         raw: true,
+      attributes: [
+      [sequelize.fn('sum', sequelize.col('marks')), 'total_marks']
+      ],
+      where: {
+      studentid: id
+      },
+      group: 'studentid'
+      });
+
+
+
+    const studentData = await student.findOne({ where: { id: id } });
+    res.render('result',{result,studentData,total})
+    // res.json([result]);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
