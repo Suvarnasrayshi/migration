@@ -30,29 +30,21 @@ console.log("🚀 Running at Port 3003");
 
 
 
-
-exports.postbookborrow = async (req, res) => {
-  console.log(req.body);
-  const{book_id,member_id,borrow_date,return_date}=req.body
-  // console.log(borrow_date);
-  let datereturn=sequelize.literal('DATE_ADD(NOW(), INTERVAL 14 DAY)' )
-  console.log("datareturn",datereturn);
-  try {
-    const newUser = await bookborrow.create(req.body);
-    const newuser =await bookborrow.create(
-      {
-        book_id,
-        member_id,
-        borrow_date,
-        return_date:sequelize.literal('DATE_ADD(NOW(), INTERVAL 14 DAY)' )
-      },
-      {raw: true}
-      )
-
-    res.json(newUser);
-    console.log(newUser);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-}
+SELECT COUNT(member_id) AS NO_OF_BOOKS_BORROWED,
+CASE
+WHEN
+COUNT(member_id)<5
+THEN
+'OCCASIONAL BORROWERS'
+WHEN
+COUNT(member_id) 
+BETWEEN 5 AND 10
+THEN
+'REGULAR BORROWERS'
+WHEN
+COUNT(member_id)>10
+THEN
+'FREQUENT BORROWER'
+END AS BORROWED_BEHAVIOR
+FROM bookborrows
+GROUP BY member_id
